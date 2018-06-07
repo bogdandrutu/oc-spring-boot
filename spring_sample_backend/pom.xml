@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>spring-sample</artifactId>
+    <groupId>io.opencensus</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>spring-sample-backend</artifactId>
+
+  <dependencies>
+    <!-- OpenCensus Brave Adapter -->
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>spring-brave</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- OpenCensus -->
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-impl</artifactId>
+      <version>${opencensus.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-exporter-trace-stackdriver</artifactId>
+      <version>${opencensus.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-contrib-grpc-util</artifactId>
+      <version>${opencensus.version}</version>
+    </dependency>
+
+    <!-- Newer google-cloud-core -->
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-core</artifactId>
+      <version>${google.cloud.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-core-grpc</artifactId>
+      <version>${google.cloud.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-core-http</artifactId>
+      <version>${google.cloud.version}</version>
+    </dependency>
+
+    <!-- Bigtable -->
+    <dependency>
+      <groupId>com.google.cloud.bigtable</groupId>
+      <artifactId>bigtable-hbase-1.x</artifactId>
+      <version>${bigtable.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>io.grpc</groupId>
+          <artifactId>grpc-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Datastore -->
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-datastore</artifactId>
+      <version>${google.cloud.version}</version>
+    </dependency>
+
+    <!-- Cloud Storage -->
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-storage</artifactId>
+      <version>${google.cloud.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
