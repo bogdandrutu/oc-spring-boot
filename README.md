@@ -85,8 +85,7 @@ in this example where only GCP client libraries are instrumented with OpenCensus
 [GcpStarterCorePropertiesLink]: https://github.com/spring-cloud/spring-cloud-gcp#spring-boot-starters
 [GoogleCloudSdkLink]: https://cloud.google.com/sdk/
 [OpenCensusLink]: https://opencensus.io/
-[OpenCensusBraveAutoConfigurationLink]: https://github.com/bogdandrutu/oc-spring-boot/blob/master/src/main/java/io/opencensus/spring/brave
-/OpenCensusBraveAutoConfiguration.java
+[OpenCensusBraveAutoConfigurationLink]: https://github.com/bogdandrutu/oc-spring-boot/blob/master/src/main/java/io/opencensus/spring/brave/OpenCensusBraveAutoConfiguration.java
 [TraceListLink]: https://console.cloud.google.com/traces/traces
 [SleuthLink]: https://cloud.spring.io/spring-cloud-sleuth/
 [StackdriverTraceApiLink]: https://console.cloud.google.com/apis/api/cloudtrace.googleapis.com/overview
