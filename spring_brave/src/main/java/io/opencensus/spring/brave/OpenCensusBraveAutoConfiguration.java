@@ -16,7 +16,7 @@
 
 package io.opencensus.spring.brave;
 
-import brave.propagation.CurrentTraceContext;
+import brave.propagation.CurrentTraceContext.ScopeDecorator;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,7 +24,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.sleuth.autoconfig.TraceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Role;
 
 /**
@@ -38,9 +37,9 @@ import org.springframework.context.annotation.Role;
 @EnableConfigurationProperties(OpenCensusBraveProperties.class)
 public class OpenCensusBraveAutoConfiguration {
 
+  // once sleuth injects a list of these, it should work intuitively!
   @Bean
-  @Primary
-  CurrentTraceContext openCensusCurrentTraceContext() {
-    return OpenCensusBraveCurrentTraceContext.create();
+  ScopeDecorator openCensusScopeDecorator() {
+    return new OpenCensusBraveScopeDecorator();
   }
 }

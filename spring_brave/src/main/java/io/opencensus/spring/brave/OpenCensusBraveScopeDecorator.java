@@ -16,7 +16,8 @@
 
 package io.opencensus.spring.brave;
 
-import brave.propagation.CurrentTraceContext;
+import brave.propagation.CurrentTraceContext.Scope;
+import brave.propagation.CurrentTraceContext.ScopeDecorator;
 import brave.propagation.TraceContext;
 import io.opencensus.trace.Annotation;
 import io.opencensus.trace.AttributeValue;
@@ -27,57 +28,39 @@ import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.SpanId;
 import io.opencensus.trace.TraceId;
 import io.opencensus.trace.TraceOptions;
+import io.opencensus.trace.Tracer;
+import io.opencensus.trace.Tracing;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.Map;
 
 /**
- * Implementation of the {@link CurrentTraceContext} that synchronize the Brave's current
+ * Implementation of the {@link ScopeDecorator} that synchronize the Brave's current
  * {@link TraceContext} with the OpenCensus's current {@link Span}.
  *
  * <p>The synchronized {@code Span} is a no-op implementation that only carries the trace
  * identifiers in order to ensure trace continuation when OpenCensus is used to create new spans.
  */
-public final class OpenCensusBraveCurrentTraceContext extends CurrentTraceContext {
+public final class OpenCensusBraveScopeDecorator implements ScopeDecorator {
 
-  private static final io.opencensus.trace.Tracer tracer = io.opencensus.trace.Tracing.getTracer();
-
-  private final CurrentTraceContext delegate;
-
-  static OpenCensusBraveCurrentTraceContext create() {
-    return new OpenCensusBraveCurrentTraceContext(Default.create());
-  }
+  private static final Tracer tracer = Tracing.getTracer();
 
   @Override
-  public TraceContext get() {
-    return delegate.get();
-  }
-
-  @Override
-  public Scope newScope(final TraceContext traceContext) {
-    final Scope scope = delegate.newScope(traceContext);
+  public Scope decorateScope(TraceContext traceContext, Scope scope) {
     final Span span = new BraveOpenCensusSpan(traceContext);
     final io.opencensus.common.Scope openCensusScope = tracer.withSpan(span);
 
     class OpenCensusBraveCurrentTraceContextScope implements Scope {
-
-      private OpenCensusBraveCurrentTraceContextScope() {
-      }
-
+      @Override
       public void close() {
         scope.close();
         openCensusScope.close();
       }
     }
-
     return new OpenCensusBraveCurrentTraceContextScope();
   }
 
-  private OpenCensusBraveCurrentTraceContext(CurrentTraceContext delegate) {
-    this.delegate = delegate;
-  }
-
-  private static class BraveOpenCensusSpan extends Span {
+  private static final class BraveOpenCensusSpan extends Span {
 
     private static final EnumSet<Options> recordOptions = EnumSet.of(Options.RECORD_EVENTS);
     private static final EnumSet<Options> notRecordOptions = EnumSet.noneOf(Options.class);
